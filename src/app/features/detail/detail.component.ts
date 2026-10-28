@@ -699,7 +699,7 @@ export class DetailComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.vehicleService.refreshVehicles();
+    this.vehicleService.refreshVehicles(false);
     this.route.paramMap.subscribe(params => {
       const id = params.get('id') || '';
       this.vehicleId.set(id);
@@ -845,7 +845,7 @@ export class DetailComponent implements OnInit {
 
     if (success) {
       this.reserveFinished.set(true);
-      await this.vehicleService.refreshVehicles();
+      await this.vehicleService.refreshVehicles(false);
 
       setTimeout(() => {
         this.closeReserveModal();

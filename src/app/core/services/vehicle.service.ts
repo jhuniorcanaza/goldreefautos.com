@@ -47,17 +47,23 @@ export class VehicleService {
     }
   }
 
+  private lastIncludePending: boolean = false;
+
   private async initVehicles(): Promise<void> {
-    await this.refreshVehicles();
+    await this.refreshVehicles(false);
   }
 
-  public async refreshVehicles(includePending: boolean = false): Promise<void> {
+  public async refreshVehicles(includePending?: boolean): Promise<void> {
+    if (includePending !== undefined) {
+      this.lastIncludePending = includePending;
+    }
+    const shouldInclude = this.lastIncludePending;
     try {
-      const url = includePending ? `${this.apiUrl}?includePending=true` : this.apiUrl;
+      const url = shouldInclude ? `${this.apiUrl}?includePending=true` : this.apiUrl;
       const data = await firstValueFrom(this.http.get<Vehicle[]>(url));
       if (data && data.length > 0) {
         this.vehiclesSignal.set(data);
-        if (!includePending) {
+        if (!shouldInclude) {
           this.saveToCache(data);
         }
         return;
@@ -106,7 +112,7 @@ export class VehicleService {
   public async createVehicle(vehicle: Omit<Vehicle, 'id' | 'fechaIngreso'>): Promise<boolean> {
     try {
       await firstValueFrom(this.http.post<Vehicle>(this.apiUrl, vehicle));
-      await this.refreshVehicles();
+      await this.refreshVehicles(this.lastIncludePending);
       return true;
     } catch (err: any) {
       console.error('Error al crear vehículo:', err);
@@ -117,8 +123,19 @@ export class VehicleService {
 
   public async updateVehicle(id: string, vehicle: Partial<Vehicle>): Promise<boolean> {
     try {
-      await firstValueFrom(this.http.patch<Vehicle>(`${this.apiUrl}/${id}`, vehicle));
-      await this.refreshVehicles();
+      const updated = await firstValueFrom(this.http.patch<Vehicle>(`${this.apiUrl}/${id}`, vehicle));
+      if (updated && updated.id) {
+        this.vehiclesSignal.update(list => {
+          const idx = list.findIndex(v => v.id === id);
+          if (idx !== -1) {
+            const next = [...list];
+            next[idx] = { ...next[idx], ...updated };
+            return next;
+          }
+          return [...list, updated];
+        });
+      }
+      await this.refreshVehicles(this.lastIncludePending);
       return true;
     } catch (err: any) {
       console.error('Error al actualizar vehículo:', err);
@@ -129,8 +146,19 @@ export class VehicleService {
 
   public async approveVehicle(id: string): Promise<boolean> {
     try {
-      await firstValueFrom(this.http.patch<Vehicle>(`${this.apiUrl}/${id}`, { estado: 'disponible' }));
-      await this.refreshVehicles(true);
+      const updated = await firstValueFrom(this.http.patch<Vehicle>(`${this.apiUrl}/${id}`, { estado: 'disponible' }));
+      if (updated && updated.id) {
+        this.vehiclesSignal.update(list => {
+          const idx = list.findIndex(v => v.id === id);
+          if (idx !== -1) {
+            const next = [...list];
+            next[idx] = { ...next[idx], ...updated };
+            return next;
+          }
+          return list;
+        });
+      }
+      await this.refreshVehicles(this.lastIncludePending);
       return true;
     } catch (err: any) {
       console.error('Error al dar el GO al vehículo:', err);
@@ -142,7 +170,8 @@ export class VehicleService {
   public async deleteVehicle(id: string): Promise<boolean> {
     try {
       await firstValueFrom(this.http.delete<void>(`${this.apiUrl}/${id}`));
-      await this.refreshVehicles();
+      this.vehiclesSignal.update(list => list.filter(v => v.id !== id));
+      await this.refreshVehicles(this.lastIncludePending);
       return true;
     } catch (err: any) {
       console.error('Error al eliminar vehículo:', err);
@@ -166,7 +195,7 @@ export class VehicleService {
         comisionPagada,
         notasLiquidacion
       }));
-      await this.refreshVehicles();
+      await this.refreshVehicles(this.lastIncludePending);
       return true;
     } catch (err) {
       console.error('Error al actualizar estado de pago de comisión:', err);

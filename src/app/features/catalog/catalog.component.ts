@@ -412,7 +412,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.vehicleService.refreshVehicles();
+    this.vehicleService.refreshVehicles(false);
 
     // Escuchar data de la ruta para ver si es un catálogo dedicado
     this.route.data.subscribe(data => {

@@ -896,7 +896,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public async ngOnInit(): Promise<void> {
     await Promise.all([
       this.loadCarouselData(),
-      this.vehicleService.refreshVehicles(),
+      this.vehicleService.refreshVehicles(false),
       this.loadSoldData()
     ]);
     this.startCarousel();

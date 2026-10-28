@@ -388,6 +388,7 @@ export class AdminDashboardComponent implements OnInit {
   protected async toggleFeatured(id: string, current: boolean): Promise<void> {
     try {
       await this.vehicleService.updateVehicle(id, { destacado: !current });
+      await this.vehicleService.refreshVehicles(true);
       this.showToast('success', 'Visibilidad destacada actualizada.');
     } catch (err: any) {
       this.showToast('error', err.message || 'Error al actualizar visibilidad.');
@@ -398,6 +399,7 @@ export class AdminDashboardComponent implements OnInit {
   protected async darElGo(v: Vehicle): Promise<void> {
     try {
       await this.vehicleService.approveVehicle(v.id);
+      await this.vehicleService.refreshVehicles(true);
       this.showToast('success', `¡GO concedido! "${v.nombre}" ahora está publicado y visible en el catálogo de Goldreef Autos.`);
     } catch (err: any) {
       this.showToast('error', err.message || 'Error al otorgar el GO.');
@@ -415,6 +417,7 @@ export class AdminDashboardComponent implements OnInit {
 
     try {
       await this.vehicleService.updateVehicle(id, { estado: newStatus });
+      await this.vehicleService.refreshVehicles(true);
       this.showToast('success', `Estado cambiado a ${newStatus}.`);
     } catch (err: any) {
       this.showToast('error', err.message || 'Error al cambiar estado.');
@@ -443,6 +446,7 @@ export class AdminDashboardComponent implements OnInit {
         payload.vendedorId = event.vendedorId;
       }
       await this.vehicleService.updateVehicle(event.vehicleId, payload);
+      await this.vehicleService.refreshVehicles(true);
       this.saleTarget.set(null);
       this.showToast('success', '¡Venta registrada con éxito y comisiones liquidadas!');
     } catch (err: any) {
@@ -470,6 +474,7 @@ export class AdminDashboardComponent implements OnInit {
     this.isDeleting.set(true);
     try {
       await this.vehicleService.deleteVehicle(target.id);
+      await this.vehicleService.refreshVehicles(true);
       this.deleteTarget.set(null);
       this.showToast('success', `El vehículo "${target.name}" fue eliminado correctamente.`);
     } catch (err: any) {
