@@ -59,32 +59,31 @@ export class SeedService implements OnApplicationBootstrap {
   }
 
   private async seedUsers() {
-    // Un usuario por rol. Las credenciales vienen SIEMPRE del entorno (.env), nunca hay valores por defecto;
-    // si falta la clave de un rol, ese usuario no se crea.
+    const isDev = !this.isProd;
     const cfg = [
       {
         rol: 'administrador' as const,
         nombre: process.env.ADMIN_NAME || 'Administrador Goldreef',
         email: process.env.ADMIN_EMAIL || 'admin@concesionaria.com',
-        password: process.env.ADMIN_PASSWORD || '',
+        password: process.env.ADMIN_PASSWORD || (isDev ? 'admin123' : ''),
       },
       {
         rol: 'concesionaria' as const,
         nombre: process.env.CONCESIONARIA_NAME || 'Goldreef Autos',
         email: process.env.CONCESIONARIA_EMAIL || 'toyota@concesionaria.com',
-        password: process.env.CONCESIONARIA_PASSWORD || '',
+        password: process.env.CONCESIONARIA_PASSWORD || (isDev ? 'cliente123' : ''),
       },
       {
         rol: 'agente' as const,
         nombre: process.env.AGENTE_NAME || 'Agente Goldreef',
         email: process.env.AGENTE_EMAIL || 'agente@concesionaria.com',
-        password: process.env.AGENTE_PASSWORD || '',
+        password: process.env.AGENTE_PASSWORD || (isDev ? 'cliente123' : ''),
       },
       {
         rol: 'cliente' as const,
         nombre: process.env.CLIENTE_NAME || 'Cliente Goldreef',
         email: process.env.CLIENTE_EMAIL || 'cliente@concesionaria.com',
-        password: process.env.CLIENTE_PASSWORD || '',
+        password: process.env.CLIENTE_PASSWORD || (isDev ? 'cliente123' : ''),
       },
     ];
 
