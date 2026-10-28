@@ -1,0 +1,74 @@
+name: goldreef
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: goldreef_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en .env}
+      MYSQL_DATABASE: ${DB_NAME:-goldreef_db}
+    volumes:
+      - goldreef_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - goldreef_internal
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: goldreef_backend
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en .env}
+      DB_DATABASE: ${DB_NAME:-goldreef_db}
+      DB_SYNCHRONIZE: ${DB_SYNCHRONIZE:-true}
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET (min 32 caracteres) en .env}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://goldreefautos.com,https://www.goldreefautos.com}
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-true}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Define ADMIN_EMAIL en .env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Define ADMIN_PASSWORD en .env}
+      CONCESIONARIA_EMAIL: ${CONCESIONARIA_EMAIL:-}
+      CONCESIONARIA_PASSWORD: ${CONCESIONARIA_PASSWORD:-}
+      AGENTE_EMAIL: ${AGENTE_EMAIL:-}
+      AGENTE_PASSWORD: ${AGENTE_PASSWORD:-}
+      CLIENTE_EMAIL: ${CLIENTE_EMAIL:-}
+      CLIENTE_PASSWORD: ${CLIENTE_PASSWORD:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - goldreef_internal
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: goldreef_frontend
+    restart: always
+    depends_on:
+      - backend
+    # Sin 'ports': el Nginx del servidor entra por proxy_network al puerto interno 80
+    networks:
+      - goldreef_internal
+      - proxy_network
+
+volumes:
+  goldreef_mysql_data:
+
+networks:
+  goldreef_internal:
+    driver: bridge
+  proxy_network:
+    external: true
