@@ -439,7 +439,7 @@ interface ColorSwatch {
                         Video Tour de YouTube (Opcional)
                       </label>
                       <p class="text-[11px] text-slate-500 dark:text-slate-400">
-                        Sube el video del vehículo a YouTube y pega el enlace aquí. No ocupa espacio en el servidor.
+                        Sube el video del vehículo a YouTube y pega el enlace aquí.
                       </p>
                     </div>
                   </div>
