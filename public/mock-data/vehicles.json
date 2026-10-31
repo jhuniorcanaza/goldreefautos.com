@@ -12,7 +12,7 @@
     "transmision": "Automática",
     "kilometraje": 3500,
     "condicion": "usado",
-    "ubicacion": "Showroom Central, La Paz",
+    "ubicacion": "Showroom Central, Quito",
     "imagenPrincipal": "/categories/gama-alta.jpg",
     "imagenes": [
       "/categories/gama-alta.jpg"
@@ -41,7 +41,7 @@
     "transmision": "Automática",
     "kilometraje": 12000,
     "condicion": "usado",
-    "ubicacion": "Santa Cruz, Equipetrol",
+    "ubicacion": "Quito, Cumbayá, Equipetrol",
     "imagenPrincipal": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1000",
@@ -71,7 +71,7 @@
     "transmision": "Manual",
     "kilometraje": 8500,
     "condicion": "usado",
-    "ubicacion": "Cochabamba, Recoleta",
+    "ubicacion": "Quito, Cumbayá, Recoleta",
     "imagenPrincipal": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=1000"
@@ -99,7 +99,7 @@
     "transmision": "Automática",
     "kilometraje": 15000,
     "condicion": "usado",
-    "ubicacion": "La Paz, Calacoto",
+    "ubicacion": "Quito, Calacoto",
     "imagenPrincipal": "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&q=80&w=1000"
@@ -127,7 +127,7 @@
     "transmision": "Automática",
     "kilometraje": 5000,
     "condicion": "usado",
-    "ubicacion": "Cochabamba, América Norte",
+    "ubicacion": "Quito, Cumbayá, América Norte",
     "imagenPrincipal": "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=1000"
@@ -155,7 +155,7 @@
     "transmision": "Automática",
     "kilometraje": 1200,
     "condicion": "nuevo",
-    "ubicacion": "Cochabamba, Planta Quantum",
+    "ubicacion": "Quito, Cumbayá, Planta Quantum",
     "imagenPrincipal": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1000"
@@ -183,7 +183,7 @@
     "transmision": "Automática",
     "kilometraje": 3500,
     "condicion": "nuevo",
-    "ubicacion": "Santa Cruz, Equipetrol",
+    "ubicacion": "Quito, Cumbayá, Equipetrol",
     "imagenPrincipal": "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&q=80&w=1000"
@@ -211,7 +211,7 @@
     "transmision": "Automática",
     "kilometraje": 9000,
     "condicion": "usado",
-    "ubicacion": "Santa Cruz, Urubó",
+    "ubicacion": "Quito, Cumbayá, Urubó",
     "imagenPrincipal": "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1000"
@@ -239,7 +239,7 @@
     "transmision": "Manual",
     "kilometraje": 4200,
     "condicion": "usado",
-    "ubicacion": "Cochabamba, Cala Cala",
+    "ubicacion": "Quito, Cumbayá, Cala Cala",
     "imagenPrincipal": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&q=80&w=1000"
@@ -267,7 +267,7 @@
     "transmision": "Manual",
     "kilometraje": 2100,
     "condicion": "usado",
-    "ubicacion": "Santa Cruz, Centro",
+    "ubicacion": "Quito, Cumbayá, Centro",
     "imagenPrincipal": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&q=80&w=1000"
@@ -295,7 +295,7 @@
     "transmision": "Manual",
     "kilometraje": 11000,
     "condicion": "usado",
-    "ubicacion": "La Paz, Zona Sur",
+    "ubicacion": "Quito, Zona Sur",
     "imagenPrincipal": "https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000"
@@ -323,7 +323,7 @@
     "transmision": "Automática",
     "kilometraje": 900,
     "condicion": "nuevo",
-    "ubicacion": "Cochabamba, Uyuni",
+    "ubicacion": "Quito, Cumbayá, Uyuni",
     "imagenPrincipal": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=1000"
@@ -351,7 +351,7 @@
     "transmision": "Automática",
     "kilometraje": 1400,
     "condicion": "nuevo",
-    "ubicacion": "Santa Cruz, 4to Anillo",
+    "ubicacion": "Quito, Cumbayá, 4to Anillo",
     "imagenPrincipal": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&q=80&w=1000"
@@ -379,7 +379,7 @@
     "transmision": "Automática",
     "kilometraje": 850,
     "condicion": "usado",
-    "ubicacion": "Santa Cruz, Montero",
+    "ubicacion": "Quito, Cumbayá, Montero",
     "imagenPrincipal": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=80&w=1000"
@@ -407,7 +407,7 @@
     "transmision": "Automática",
     "kilometraje": 1400,
     "condicion": "usado",
-    "ubicacion": "Santa Cruz, San Julián",
+    "ubicacion": "Quito, Cumbayá, San Julián",
     "imagenPrincipal": "https://images.unsplash.com/photo-1592982537447-6f2a6a0c5c13?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1592982537447-6f2a6a0c5c13?auto=format&fit=crop&q=80&w=1000"
@@ -435,7 +435,7 @@
     "transmision": "Hidrostática",
     "kilometraje": 2400,
     "condicion": "usado",
-    "ubicacion": "Cochabamba, Quillacollo",
+    "ubicacion": "Quito, Cumbayá, Quillacollo",
     "imagenPrincipal": "https://images.unsplash.com/photo-1579294800821-2e41879e6022?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1579294800821-2e41879e6022?auto=format&fit=crop&q=80&w=1000"
@@ -463,7 +463,7 @@
     "transmision": "Automática",
     "kilometraje": 45000,
     "condicion": "usado",
-    "ubicacion": "La Paz, El Alto",
+    "ubicacion": "Quito, El Alto",
     "imagenPrincipal": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000"
@@ -491,7 +491,7 @@
     "transmision": "Automática",
     "kilometraje": 32000,
     "condicion": "usado",
-    "ubicacion": "Santa Cruz, Warnes",
+    "ubicacion": "Quito, Cumbayá, Warnes",
     "imagenPrincipal": "https://images.unsplash.com/photo-1586191582118-275488426027?auto=format&fit=crop&q=80&w=1000",
     "imagenes": [
       "https://images.unsplash.com/photo-1586191582118-275488426027?auto=format&fit=crop&q=80&w=1000"

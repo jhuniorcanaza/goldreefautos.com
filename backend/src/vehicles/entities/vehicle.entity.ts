@@ -60,6 +60,9 @@ export class Vehicle {
   @Column({ type: 'json', nullable: true })
   imagenes: string[];
 
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  videoUrl: string | null;
+
   @Column({ type: 'text' })
   descripcion: string;
 
@@ -75,7 +78,7 @@ export class Vehicle {
   @Column({ type: 'varchar', length: 20 })
   fechaIngreso: string;
 
-  @Column({ type: 'varchar', length: 30, default: '59177490451' })
+  @Column({ type: 'varchar', length: 30, default: '593986847543' })
   telefonoContacto: string;
 
   @Column({ type: 'varchar', nullable: true })

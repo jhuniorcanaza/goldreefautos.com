@@ -2,6 +2,7 @@ import { Component, inject, signal, computed, effect, OnInit } from '@angular/co
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { FavoriteService } from '../../core/services/favorite.service';
 import { ComparisonService } from '../../core/services/comparison.service';
@@ -10,6 +11,7 @@ import { QuoteService } from '../../core/services/quote.service';
 import { ReservationService } from '../../core/services/reservation.service';
 import { VehicleCardComponent } from '../../shared/components/vehicle-card/vehicle-card.component';
 import { COMPANY_CONTACT, WHATSAPP_MESSAGES, cleanPhoneNumber, buildWhatsAppUrl } from '../../core/constants/company-contact.constant';
+import { extractYouTubeId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '../../core/utils/youtube.util';
 
 @Component({
   selector: 'app-detail',
@@ -34,27 +36,88 @@ import { COMPANY_CONTACT, WHATSAPP_MESSAGES, cleanPhoneNumber, buildWhatsAppUrl 
         <!-- Main Product Grid -->
         <div class="grid grid-cols-1 gap-10 lg:grid-cols-12">
           
-          <!-- Column 1: Gallery (7/12 cols) -->
+          <!-- Column 1: Gallery + Integrated Video Player (7/12 cols) -->
           <div class="lg:col-span-7 space-y-4">
             
-            <!-- Large Image Frame -->
-            <div class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
-              <span class="absolute top-4 left-4 z-10 inline-flex items-center rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
-                    [class]="statusBadgeClass()">
-                {{ statusText() }}
-              </span>
+            <!-- Large Image / Video Frame -->
+            <div class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-950 shadow-sm">
+              @if (isVideoActive() && videoEmbedUrl()) {
+                <!-- YouTube Embedded Player -->
+                <iframe [src]="videoEmbedUrl()"
+                        title="Video de {{ v.nombre }}"
+                        class="h-full w-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                </iframe>
 
-              <img [src]="activeImage() || v.imagenPrincipal" [alt]="v.nombre" class="h-full w-full object-cover" />
+                <!-- Button to switch back to photos -->
+                <button type="button"
+                        (click)="deactivateVideo()"
+                        class="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-white px-3.5 py-2 text-xs font-bold shadow-lg backdrop-blur-md border border-white/15 transition-all cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Ver Fotos
+                </button>
+              } @else {
+                <!-- Status Badge -->
+                <span class="absolute top-4 left-4 z-10 inline-flex items-center rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
+                      [class]="statusBadgeClass()">
+                  {{ statusText() }}
+                </span>
+
+                <!-- Direct "Ver Video" Button Overlay when vehicle has YouTube video -->
+                @if (hasVideo()) {
+                  <button type="button"
+                          (click)="activateVideo()"
+                          class="absolute top-4 right-4 z-10 inline-flex items-center gap-2 rounded-xl bg-red-600 hover:bg-red-500 text-white px-3.5 py-2 text-xs font-bold shadow-lg transition-all hover:scale-105 cursor-pointer border border-red-400/40">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Ver Video
+                  </button>
+                }
+
+                <img [src]="activeImage() || v.imagenPrincipal" [alt]="v.nombre" class="h-full w-full object-cover bg-slate-100" />
+              }
             </div>
 
-            <!-- Thumbnail Carousel Grid -->
-            @if (allImages().length > 1) {
-              <div class="flex gap-3 overflow-x-auto pb-2">
+            <!-- Thumbnail Carousel Grid (Photos + Video Thumbnail) -->
+            @if (allImages().length > 1 || hasVideo()) {
+              <div class="flex gap-3 overflow-x-auto pb-2 items-center">
+                @if (hasVideo()) {
+                  <button type="button"
+                          (click)="activateVideo()"
+                          class="group relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-lg border-2 transition-all cursor-pointer"
+                          [class.border-red-600]="isVideoActive()"
+                          [class.ring-2]="isVideoActive()"
+                          [class.ring-red-500/40]="isVideoActive()"
+                          [class.border-transparent]="!isVideoActive()"
+                          title="Reproducir Video del Vehículo">
+                    <img [src]="videoThumbnailUrl() || v.imagenPrincipal"
+                         (error)="onThumbError($event, v.imagenPrincipal)"
+                         class="h-full w-full object-cover brightness-75 group-hover:scale-105 transition-transform"
+                         alt="Video Tour" />
+                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/35 group-hover:bg-black/20 transition-colors">
+                      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white shadow-md group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current ml-0.5" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </span>
+                      <span class="mt-1 rounded bg-black/70 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white">
+                        Video
+                      </span>
+                    </div>
+                  </button>
+                }
+
                 @for (img of allImages(); track img) {
-                  <button (click)="setActiveImage(img)"
-                          class="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-lg border-2 transition-all"
-                          [class.border-blue-600]="(activeImage() || v.imagenPrincipal) === img"
-                          [class.border-transparent]="(activeImage() || v.imagenPrincipal) !== img">
+                  <button type="button"
+                          (click)="setActiveImage(img)"
+                          class="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-lg border-2 transition-all cursor-pointer"
+                          [class.border-blue-600]="!isVideoActive() && (activeImage() || v.imagenPrincipal) === img"
+                          [class.border-transparent]="isVideoActive() || (activeImage() || v.imagenPrincipal) !== img">
                     <img [src]="img" class="h-full w-full object-cover" alt="Miniatura" />
                   </button>
                 }
@@ -579,6 +642,7 @@ export class DetailComponent implements OnInit {
   private readonly comparisonService = inject(ComparisonService);
   private readonly quoteService = inject(QuoteService);
   private readonly reservationService = inject(ReservationService);
+  private readonly sanitizer = inject(DomSanitizer);
   protected readonly fb = inject(FormBuilder);
   protected readonly getCategoryLabel = getCategoryLabel;
 
@@ -632,6 +696,25 @@ export class DetailComponent implements OnInit {
   );
 
   protected readonly activeImage = signal<string>('');
+  protected readonly isVideoActive = signal<boolean>(false);
+
+  protected readonly hasVideo = computed(() => {
+    const v = this.vehicle();
+    return !!extractYouTubeId(v?.videoUrl);
+  });
+
+  protected readonly videoEmbedUrl = computed<SafeResourceUrl | null>(() => {
+    const v = this.vehicle();
+    const embedUrl = getYouTubeEmbedUrl(v?.videoUrl);
+    if (!embedUrl) return null;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(`${embedUrl}&autoplay=1`);
+  });
+
+  protected readonly videoThumbnailUrl = computed<string | null>(() => {
+    const v = this.vehicle();
+    return getYouTubeThumbnailUrl(v?.videoUrl);
+  });
+
   protected readonly isFavorite = computed(() => this.favoriteService.isFavorite(this.vehicleId()));
   protected readonly isCompared = computed(() => this.comparisonService.isCompared(this.vehicleId()));
 
@@ -694,6 +777,7 @@ export class DetailComponent implements OnInit {
       const v = this.vehicle();
       if (v?.imagenPrincipal) {
         this.activeImage.set(v.imagenPrincipal);
+        this.isVideoActive.set(false);
       }
     });
   }
@@ -703,6 +787,7 @@ export class DetailComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id') || '';
       this.vehicleId.set(id);
+      this.isVideoActive.set(false);
       if (typeof window !== 'undefined') {
         window.scrollTo({ top: 0, behavior: 'instant' });
       }
@@ -710,7 +795,26 @@ export class DetailComponent implements OnInit {
   }
 
   protected setActiveImage(url: string): void {
+    this.isVideoActive.set(false);
     this.activeImage.set(url);
+  }
+
+  protected activateVideo(): void {
+    if (this.hasVideo()) {
+      this.isVideoActive.set(true);
+    }
+  }
+
+  protected deactivateVideo(): void {
+    this.isVideoActive.set(false);
+  }
+
+  protected onThumbError(event: Event, fallbackUrl: string): void {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.dataset['fallback']) {
+      img.dataset['fallback'] = 'true';
+      img.src = fallbackUrl || '/vehicles/auto-01.jpg';
+    }
   }
 
   protected readonly formattedSpecs = computed(() => {

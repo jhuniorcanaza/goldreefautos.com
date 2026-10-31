@@ -53,6 +53,10 @@ export class CreateVehicleDto {
   @IsOptional()
   imagenes: string[];
 
+  @IsString({ message: 'El enlace de video debe ser un texto válido' })
+  @IsOptional()
+  videoUrl?: string;
+
   @IsNotEmpty({ message: 'La descripción es requerida' })
   descripcion: string;
 

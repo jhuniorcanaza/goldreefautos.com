@@ -80,13 +80,31 @@ export const COMPANY_CONTACT = {
 } as const;
 
 /**
+ * Números heredados de proyectos anteriores que jamás deben utilizarse.
+ */
+const LEGACY_BLOCKED_PHONES = new Set([
+  '59177490451',
+  '77490451',
+  '59176543210',
+  '76543210'
+]);
+
+/**
  * Limpia y normaliza un número telefónico extrayendo solo dígitos.
- * Si no se proporciona ninguno, retorna el teléfono oficial del Administrador.
+ * Si no se proporciona ninguno o si pertenece a un número antiguo bloqueado, retorna el teléfono oficial del Administrador.
  */
 export function cleanPhoneNumber(phone?: string | null): string {
   if (!phone) return COMPANY_CONTACT.adminPhone;
   const cleaned = phone.replace(/\D/g, '');
-  return cleaned.length >= 8 ? cleaned : COMPANY_CONTACT.adminPhone;
+  if (
+    cleaned.length < 8 ||
+    LEGACY_BLOCKED_PHONES.has(cleaned) ||
+    cleaned.endsWith('77490451') ||
+    cleaned.startsWith('591')
+  ) {
+    return COMPANY_CONTACT.adminPhone;
+  }
+  return cleaned;
 }
 
 /**

@@ -54,8 +54,29 @@ export class SeedService implements OnApplicationBootstrap {
     if (this.seedDemo) {
       await this.seedVehicles();
     }
+    await this.cleanupLegacyPhones();
     await this.seedCarousel();
     this.logger.log('Verificación de datos de sembrado finalizada.');
+  }
+
+  private async cleanupLegacyPhones() {
+    try {
+      const result = await this.vehicleRepository
+        .createQueryBuilder()
+        .update(Vehicle)
+        .set({ telefonoContacto: '593986847543' })
+        .where(
+          "telefonoContacto IN (:...legacy) OR telefonoContacto LIKE '591%'",
+          { legacy: ['59177490451', '77490451', '59176543210', '76543210'] },
+        )
+        .execute();
+
+      if (result.affected && result.affected > 0) {
+        this.logger.log(`Actualizados ${result.affected} vehículos con teléfonos antiguos al número oficial de Goldreef Autos.`);
+      }
+    } catch (err) {
+      this.logger.warn('No se pudo ejecutar limpieza automática de teléfonos antiguos:', err);
+    }
   }
 
   private async seedUsers() {
@@ -235,7 +256,7 @@ export class SeedService implements OnApplicationBootstrap {
           destacado: v.destacado,
           estado: v.estado as any,
           fechaIngreso: v.fechaIngreso,
-          telefonoContacto: (v as any).telefonoContacto || '59177490451',
+          telefonoContacto: (v as any).telefonoContacto || '593986847543',
           moneda: (v as any).moneda || 'USD',
           especificaciones: []
         });

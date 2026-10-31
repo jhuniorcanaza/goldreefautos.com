@@ -19,12 +19,12 @@ import { COMPANY_CONTACT, WHATSAPP_MESSAGES, openWhatsAppDirect } from '../../..
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white font-black backdrop-blur-sm shadow-inner">
-                  <span>RS</span>
+                  <span>GA</span>
                   <span class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-emerald-700"></span>
                 </div>
                 <div>
                   <h3 class="text-sm font-bold flex items-center gap-1.5 leading-none">
-                    Ruedas Store
+                    {{ contact.companyName }}
                     <svg class="h-4 w-4 text-emerald-200 fill-current" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                     </svg>

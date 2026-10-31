@@ -59,6 +59,7 @@ export interface Vehicle {
   ubicacion: string;
   imagenPrincipal: string;
   imagenes: string[];
+  videoUrl?: string;
   descripcion: string;
   destacado: boolean;
   estado: 'disponible' | 'reservado' | 'vendido' | 'pendiente';

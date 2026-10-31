@@ -2,13 +2,15 @@ import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { VehicleService } from '../../../core/services/vehicle.service';
 import { SpecificationService } from '../../../core/services/specification.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Vehicle, SpecificationGroup, Specification } from '../../../core/models/vehicle.model';
 import { compressImage } from '../../../core/utils/image-compressor.util';
 import { CATALOG_BY_CATEGORY, BrandCatalog } from '../../../core/constants/vehicle-catalog.constant';
-import { COMPANY_CONTACT } from '../../../core/constants/company-contact.constant';
+import { COMPANY_CONTACT, cleanPhoneNumber } from '../../../core/constants/company-contact.constant';
+import { extractYouTubeId, getYouTubeEmbedUrl, isValidYouTubeUrl } from '../../../core/utils/youtube.util';
 
 interface ColorSwatch {
   name: string;
@@ -338,13 +340,13 @@ interface ColorSwatch {
             <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Ubicación Física *</label>
-                <input type="text" formControlName="ubicacion" placeholder="Ej. Santa Cruz, Av. Cristo Redentor"
+                <input type="text" formControlName="ubicacion" placeholder="Ej. Quito, Cumbayá - Av. Oswaldo Guayasamín"
                        class="mt-1.5 w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-blue-500 focus:outline-none shadow-2xs"
                        [class.border-red-400]="isFieldInvalid('ubicacion')" />
               </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase font-bold">WhatsApp / Teléfono *</label>
-                <input type="text" formControlName="telefonoContacto" placeholder="Ej. 59177490451"
+                <input type="text" formControlName="telefonoContacto" placeholder="Ej. 593986847543"
                        class="mt-1.5 w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-blue-500 focus:outline-none shadow-2xs"
                        [class.border-red-400]="isFieldInvalid('telefonoContacto')" />
               </div>
@@ -360,10 +362,10 @@ interface ColorSwatch {
             </div>
           </div>
 
-          <!-- Seccion 3: Imágenes (Subida de Archivos) -->
+          <!-- Seccion 3: Imágenes y Video de YouTube -->
           <div>
             <h2 class="text-xs font-extrabold text-slate-900 dark:text-white uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2.5">
-              3. Visuales y Fotografías del Vehículo
+              3. Visuales, Fotografías y Video de YouTube
             </h2>
             
             <div class="mt-4 space-y-6">
@@ -419,6 +421,71 @@ interface ColorSwatch {
                         </button>
                       </div>
                     }
+                  </div>
+                }
+              </div>
+
+              <!-- Video de YouTube con Vista Previa en Vivo -->
+              <div class="p-5 rounded-2xl bg-gradient-to-br from-rose-500/5 via-slate-50 to-slate-100/70 dark:from-rose-950/20 dark:via-slate-900 dark:to-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-center gap-2.5">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-red-600 text-white shadow-sm shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white">
+                        Video Tour de YouTube (Opcional)
+                      </label>
+                      <p class="text-[11px] text-slate-500 dark:text-slate-400">
+                        Sube el video del vehículo a YouTube y pega el enlace aquí. No ocupa espacio en el servidor.
+                      </p>
+                    </div>
+                  </div>
+                  @if (videoUrlInput()) {
+                    <button type="button" (click)="clearVideoUrl()"
+                            class="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline shrink-0 cursor-pointer">
+                      Quitar video
+                    </button>
+                  }
+                </div>
+
+                <div class="relative">
+                  <input type="url"
+                         formControlName="videoUrl"
+                         (input)="onVideoUrlChange($event)"
+                         placeholder="Ej. https://www.youtube.com/watch?v=... o https://youtu.be/..."
+                         class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 pl-4 pr-10 py-2.5 text-sm text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-red-500 focus:outline-none shadow-2xs"
+                         [class.border-rose-500]="isYoutubeUrlInvalid()" />
+                </div>
+
+                @if (isYoutubeUrlInvalid()) {
+                  <div class="flex items-center gap-2 text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-3.5 py-2 rounded-xl border border-rose-200 dark:border-rose-900/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>El enlace ingresado no es válido. Copia un link de YouTube (watch?v=, youtu.be/ o Shorts).</span>
+                  </div>
+                }
+
+                @if (youtubeEmbedPreview(); as safeUrl) {
+                  <div class="space-y-2.5 pt-1">
+                    <div class="flex items-center justify-between">
+                      <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                        <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        Vista previa del reproductor en vivo
+                      </span>
+                      <span class="text-[11px] font-medium text-slate-400">ID: {{ detectedYoutubeId() }}</span>
+                    </div>
+                    <div class="relative aspect-video w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-black shadow-lg">
+                      <iframe [src]="safeUrl"
+                              title="Vista previa del video del vehículo"
+                              class="h-full w-full border-0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowfullscreen>
+                      </iframe>
+                    </div>
                   </div>
                 }
               </div>
@@ -696,6 +763,7 @@ export class AdminFormComponent implements OnInit {
   protected readonly authService = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly sanitizer = inject(DomSanitizer);
 
   protected readonly isEditMode = signal(false);
   protected readonly vehicleId = signal<string | null>(null);
@@ -742,9 +810,25 @@ export class AdminFormComponent implements OnInit {
   protected readonly specificationGroups = signal<SpecificationGroup[]>([]);
   protected readonly selectedSpecs = signal<number[]>([]);
 
-  // Visuales Base64 state
+  // Visuales Base64 state & YouTube Video state
   protected readonly imagenPrincipalPreview = signal<string>('');
   protected readonly galleryImages = signal<string[]>([]);
+  protected readonly videoUrlInput = signal<string>('');
+
+  protected readonly detectedYoutubeId = computed<string | null>(() => {
+    return extractYouTubeId(this.videoUrlInput());
+  });
+
+  protected readonly isYoutubeUrlInvalid = computed<boolean>(() => {
+    const raw = this.videoUrlInput().trim();
+    return raw.length > 0 && !isValidYouTubeUrl(raw);
+  });
+
+  protected readonly youtubeEmbedPreview = computed<SafeResourceUrl | null>(() => {
+    const embedUrl = getYouTubeEmbedUrl(this.videoUrlInput(), false);
+    if (!embedUrl) return null;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+  });
 
   // Modal para agregar especificación
   protected readonly isAddSpecModalOpen = signal(false);
@@ -770,6 +854,7 @@ export class AdminFormComponent implements OnInit {
       ubicacion: ['', [Validators.required]],
       descripcion: ['', [Validators.required, Validators.minLength(10)]],
       telefonoContacto: [COMPANY_CONTACT.adminPhone, [Validators.required, Validators.pattern(/^[\+0-9\s\-]+$/)]],
+      videoUrl: [''],
       destacado: [false],
       estado: ['disponible', [Validators.required]],
       // Autos
@@ -807,6 +892,16 @@ export class AdminFormComponent implements OnInit {
         }
       }
     });
+  }
+
+  protected onVideoUrlChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.videoUrlInput.set(input.value || '');
+  }
+
+  protected clearVideoUrl(): void {
+    this.vehicleForm.patchValue({ videoUrl: '' });
+    this.videoUrlInput.set('');
   }
 
   // Métodos de Selección de Marca y Modelo
@@ -940,6 +1035,7 @@ export class AdminFormComponent implements OnInit {
   private async loadVehicleData(id: string): Promise<void> {
     const v = await this.vehicleService.getVehicleById(id);
     if (v) {
+      const sanitizedPhone = cleanPhoneNumber(v.telefonoContacto);
       this.vehicleForm.patchValue({
         nombre: v.nombre,
         marca: v.marca,
@@ -956,7 +1052,8 @@ export class AdminFormComponent implements OnInit {
         condicion: v.condicion,
         ubicacion: v.ubicacion,
         descripcion: v.descripcion,
-        telefonoContacto: v.telefonoContacto || COMPANY_CONTACT.adminPhone,
+        telefonoContacto: sanitizedPhone,
+        videoUrl: v.videoUrl || '',
         destacado: v.destacado,
         estado: v.estado,
         autoCarroceria: v.autoDetail?.carroceria || '',
@@ -972,6 +1069,8 @@ export class AdminFormComponent implements OnInit {
         maquinariaPesoOperativo: v.maquinariaDetail?.pesoOperativo || 1000,
         maquinariaHorasUso: v.maquinariaDetail?.horasUso || 0
       });
+
+      this.videoUrlInput.set(v.videoUrl || '');
 
       // Sincronizar selectores de marca y modelo según catálogo
       const cat = v.categoria || 'autos';
@@ -1166,8 +1265,9 @@ export class AdminFormComponent implements OnInit {
     if (this.vehicleForm.get('descripcion')?.invalid) missingFields.push('Descripción debe tener al menos 10 caracteres');
     if (this.vehicleForm.get('telefonoContacto')?.invalid) missingFields.push(`Teléfono de contacto es requerido (ej. ${COMPANY_CONTACT.adminPhoneDisplay})`);
     if (!mainImg) missingFields.push('Debe cargar la Imagen Principal del vehículo');
+    if (this.isYoutubeUrlInvalid()) missingFields.push('El enlace de video debe ser una URL válida de YouTube');
 
-    if (this.vehicleForm.invalid || !mainImg) {
+    if (this.vehicleForm.invalid || !mainImg || this.isYoutubeUrlInvalid()) {
       this.alertMessage.set({
         type: 'error',
         title: 'Por favor completa los siguientes campos obligatorios antes de guardar:',
@@ -1186,6 +1286,7 @@ export class AdminFormComponent implements OnInit {
       }
 
       const formValue = this.vehicleForm.value;
+      const rawVideoUrl = (formValue.videoUrl || '').trim();
 
       const vehicleData: any = {
         nombre: formValue.nombre,
@@ -1204,8 +1305,9 @@ export class AdminFormComponent implements OnInit {
         ubicacion: formValue.ubicacion,
         imagenPrincipal: mainImg,
         imagenes: imagenes,
+        videoUrl: rawVideoUrl ? rawVideoUrl : null,
         descripcion: formValue.descripcion,
-        telefonoContacto: formValue.telefonoContacto,
+        telefonoContacto: cleanPhoneNumber(formValue.telefonoContacto),
         destacado: formValue.destacado,
         estado: formValue.estado,
         especificaciones: this.selectedSpecs()

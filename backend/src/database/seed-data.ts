@@ -11,7 +11,7 @@ export const SEED_VEHICLES = [
     transmision: "Automática",
     kilometraje: 12000,
     condicion: "usado",
-    ubicacion: "Santiago, Centro",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/auto-01.jpg",
     imagenes: [
       "/vehicles/auto-01.jpg",
@@ -28,7 +28,8 @@ export const SEED_VEHICLES = [
       "Consumo promedio": "11.5 km/l",
       "Capacidad de carga": "1,000 kg"
     },
-    fechaIngreso: "2026-05-10"
+    fechaIngreso: "2026-05-10",
+    telefonoContacto: "593986847543"
   },
   {
     id: "auto-02",
@@ -36,14 +37,14 @@ export const SEED_VEHICLES = [
     marca: "Mazda",
     modelo: "Mazda 3",
     anio: 2023,
-    precio: 170000,
-    moneda: "BOB",
+    precio: 24500,
+    moneda: "USD",
     categoria: "autos",
     tipoCombustible: "Gasolina",
     transmision: "Manual",
     kilometraje: 18500,
     condicion: "usado",
-    ubicacion: "Valparaíso, Viña del Mar",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/auto-02.jpg",
     imagenes: [
       "/vehicles/auto-02.jpg",
@@ -60,7 +61,8 @@ export const SEED_VEHICLES = [
       "Capacidad de maletero": "358 litros",
       "Equipamiento": "Pantalla 8.8\", Apple CarPlay/Android Auto, Control crucero adaptativo"
     },
-    fechaIngreso: "2026-06-15"
+    fechaIngreso: "2026-06-15",
+    telefonoContacto: "593986847543"
   },
   {
     id: "auto-03",
@@ -74,7 +76,7 @@ export const SEED_VEHICLES = [
     transmision: "Automática",
     kilometraje: 9000,
     condicion: "usado",
-    ubicacion: "Santiago, Las Condes",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/auto-03.jpg",
     imagenes: [
       "/vehicles/auto-03.jpg",
@@ -91,7 +93,8 @@ export const SEED_VEHICLES = [
       "Aceleración 0-100 km/h": "4.3 segundos",
       "Transmisión": "Automática de 10 velocidades"
     },
-    fechaIngreso: "2026-04-01"
+    fechaIngreso: "2026-04-01",
+    telefonoContacto: "593986847543"
   },
   {
     id: "moto-01",
@@ -105,13 +108,13 @@ export const SEED_VEHICLES = [
     transmision: "Manual",
     kilometraje: 0,
     condicion: "nuevo",
-    ubicacion: "Santiago, Las Condes",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/moto-01.jpg",
     imagenes: [
       "/vehicles/moto-01.jpg",
       "/vehicles/moto-01.jpg"
     ],
-    descripcion: "La moto de aventura definitiva para el carnet A2. Equipada con horquilla invertida Showa SFF-BP de 41 mm, doble disco delantero con pinzas Nissin y una ergonomía excelente para viajes largos o desplazamientos diarios en la ciudad.",
+    descripcion: "La moto de aventura definitiva. Equipada con horquilla invertida Showa SFF-BP de 41 mm, doble disco delantero con pinzas Nissin y una ergonomía excelente para viajes largos o desplazamientos diarios en la ciudad.",
     destacado: true,
     estado: "disponible",
     especificaciones: {
@@ -122,7 +125,8 @@ export const SEED_VEHICLES = [
       "Capacidad del tanque": "17.5 Litros",
       "Frenos": "Doble disco delantero 296mm con ABS"
     },
-    fechaIngreso: "2026-07-01"
+    fechaIngreso: "2026-07-01",
+    telefonoContacto: "593986847543"
   },
   {
     id: "moto-02",
@@ -136,7 +140,7 @@ export const SEED_VEHICLES = [
     transmision: "Manual",
     kilometraje: 4200,
     condicion: "usado",
-    ubicacion: "Concepción, Centro",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/moto-02.jpg",
     imagenes: [
       "/vehicles/moto-02.jpg",
@@ -153,7 +157,8 @@ export const SEED_VEHICLES = [
       "Peso": "189 kg",
       "Transmisión": "6 velocidades con embrague antirrebote y Quickshifter"
     },
-    fechaIngreso: "2026-05-20"
+    fechaIngreso: "2026-05-20",
+    telefonoContacto: "593986847543"
   },
   {
     id: "moto-03",
@@ -167,7 +172,7 @@ export const SEED_VEHICLES = [
     transmision: "Manual",
     kilometraje: 1500,
     condicion: "usado",
-    ubicacion: "Santiago, Las Condes",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/moto-03.jpg",
     imagenes: [
       "/vehicles/moto-03.jpg",
@@ -184,7 +189,8 @@ export const SEED_VEHICLES = [
       "Capacidad del tanque": "30 Litros",
       "Equipamiento": "Pantalla TFT Connectivity, luces adaptativas, modos de conducción Pro"
     },
-    fechaIngreso: "2026-06-25"
+    fechaIngreso: "2026-06-25",
+    telefonoContacto: "593986847543"
   },
   {
     id: "maquinaria-01",
@@ -198,7 +204,7 @@ export const SEED_VEHICLES = [
     transmision: "Hidrostática",
     kilometraje: 2400,
     condicion: "usado",
-    ubicacion: "Antofagasta, Sector Industrial",
+    ubicacion: "Quito, Sector Industrial",
     imagenPrincipal: "/vehicles/maquinaria-01.jpg",
     imagenes: [
       "/vehicles/maquinaria-01.jpg",
@@ -215,7 +221,8 @@ export const SEED_VEHICLES = [
       "Profundidad máx. excavación": "6.72 metros",
       "Horas de uso": "2,400 horas"
     },
-    fechaIngreso: "2026-03-10"
+    fechaIngreso: "2026-03-10",
+    telefonoContacto: "593986847543"
   },
   {
     id: "maquinaria-02",
@@ -229,7 +236,7 @@ export const SEED_VEHICLES = [
     transmision: "Mecánica Sincronizada",
     kilometraje: 3100,
     condicion: "usado",
-    ubicacion: "Rancagua, Agrícola",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/maquinaria-02.jpg",
     imagenes: [
       "/vehicles/maquinaria-02.jpg",
@@ -246,7 +253,8 @@ export const SEED_VEHICLES = [
       "Transmisión": "PowrQuad 16x16 marchas",
       "Horas de uso": "3,100 horas"
     },
-    fechaIngreso: "2026-04-18"
+    fechaIngreso: "2026-04-18",
+    telefonoContacto: "593986847543"
   },
   {
     id: "maquinaria-03",
@@ -260,7 +268,7 @@ export const SEED_VEHICLES = [
     transmision: "Powershift",
     kilometraje: 0,
     condicion: "nuevo",
-    ubicacion: "Santiago, San Bernardo",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/maquinaria-03.jpg",
     imagenes: [
       "/vehicles/maquinaria-03.jpg",
@@ -277,7 +285,8 @@ export const SEED_VEHICLES = [
       "Capacidad pala delantera": "1.0 m³",
       "Profundidad máx. excavación retro": "4.75 metros"
     },
-    fechaIngreso: "2026-07-05"
+    fechaIngreso: "2026-07-05",
+    telefonoContacto: "593986847543"
   },
   {
     id: "auto-ev-01",
@@ -291,7 +300,7 @@ export const SEED_VEHICLES = [
     transmision: "Automática",
     kilometraje: 0,
     condicion: "nuevo",
-    ubicacion: "La Paz, Zona Sur",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/auto-ev-01.jpg",
     imagenes: ["/vehicles/auto-ev-01.jpg",
       "/vehicles/auto-ev-01.jpg"
@@ -308,7 +317,7 @@ export const SEED_VEHICLES = [
       "Tracción": "AWD integral"
     },
     fechaIngreso: "2026-07-20",
-    telefonoContacto: "59177490451"
+    telefonoContacto: "593986847543"
   },
   {
     id: "moto-ev-01",
@@ -322,7 +331,7 @@ export const SEED_VEHICLES = [
     transmision: "Automática",
     kilometraje: 150,
     condicion: "usado",
-    ubicacion: "Santa Cruz, Equipetrol",
+    ubicacion: "Quito, Cumbayá",
     imagenPrincipal: "/vehicles/moto-ev-01.jpg",
     imagenes: ["/vehicles/moto-ev-01.jpg",
       "/vehicles/moto-ev-01.jpg"
@@ -339,6 +348,6 @@ export const SEED_VEHICLES = [
       "Modos de conducción": "7 modos (4 predefinidos, 3 personalizados)"
     },
     fechaIngreso: "2026-07-22",
-    telefonoContacto: "59176543210"
+    telefonoContacto: "593986847543"
   }
 ];

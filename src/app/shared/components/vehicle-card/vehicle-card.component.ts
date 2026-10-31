@@ -4,6 +4,7 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Vehicle, getCategoryLabel } from '../../../core/models/vehicle.model';
 import { FavoriteService } from '../../../core/services/favorite.service';
 import { ComparisonService } from '../../../core/services/comparison.service';
+import { extractYouTubeId } from '../../../core/utils/youtube.util';
 
 @Component({
   selector: 'app-vehicle-card',
@@ -37,6 +38,14 @@ import { ComparisonService } from '../../../core/services/comparison.service';
           <span class="absolute bottom-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 text-white px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest shadow border border-emerald-500">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
             Eco Eléctrico
+          </span>
+        }
+        @if (hasVideo()) {
+          <span class="absolute bottom-3 right-3 z-10 inline-flex items-center gap-1 rounded-lg bg-red-600/95 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-md backdrop-blur-xs border border-red-400/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 fill-current" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            Video
           </span>
         }
       </div>
@@ -130,6 +139,8 @@ export class VehicleCardComponent {
   public readonly displayCurrency = input<'USD'>('USD');
   protected readonly getCategoryLabel = getCategoryLabel;
 
+  protected readonly hasVideo = computed(() => !!extractYouTubeId(this.vehicle().videoUrl));
+
   protected readonly cardClass = computed(() => {
     const isEV = this.vehicle().categoria === 'autos_electricos' || this.vehicle().categoria === 'motos_electricos';
     if (isEV) {
@@ -192,4 +203,3 @@ export class VehicleCardComponent {
     }
   }
 }
-

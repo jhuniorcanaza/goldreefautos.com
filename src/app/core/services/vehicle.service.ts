@@ -214,7 +214,7 @@ export class VehicleService {
         precio: 46500,
         moneda: 'USD',
         imagenPrincipal: '/vehicles/auto-01.jpg',
-        ubicacion: 'Cochabamba · Casa Matriz',
+        ubicacion: 'Quito · Cumbayá',
         fechaVenta: 'Octubre 2026',
         tiempoVenta: 'Vendido en 48 horas',
         testimonio: 'Excelente asesoramiento notarial y rapidez en el desembolso.',
@@ -229,7 +229,7 @@ export class VehicleService {
         precio: 52000,
         moneda: 'USD',
         imagenPrincipal: '/vehicles/auto-03.jpg',
-        ubicacion: 'Santa Cruz · Equipetrol',
+        ubicacion: 'Quito · Cumbayá',
         fechaVenta: 'Octubre 2026',
         tiempoVenta: 'Vendido en 72 horas',
         testimonio: 'Cero riesgos de estafa. Vendieron mi auto al precio justo.',
@@ -244,7 +244,7 @@ export class VehicleService {
         precio: 24500,
         moneda: 'USD',
         imagenPrincipal: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800',
-        ubicacion: 'La Paz · Calacoto',
+        ubicacion: 'Quito · Tumbaco',
         fechaVenta: 'Septiembre 2026',
         tiempoVenta: 'Vendido en 24 horas',
         testimonio: 'Muy satisfecho con la inspección y formalidad.',
@@ -274,7 +274,7 @@ export class VehicleService {
         precio: 59000,
         moneda: 'USD',
         imagenPrincipal: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=800',
-        ubicacion: 'Santa Cruz · Urubó',
+        ubicacion: 'Guayaquil · Samborondón',
         fechaVenta: 'Agosto 2026',
         tiempoVenta: 'Vendido en 3 días',
         testimonio: 'Proceso impecable de entrega e intermediación.',
@@ -313,4 +313,3 @@ export class VehicleService {
     };
   }
 }
-
