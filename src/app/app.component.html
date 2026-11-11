@@ -1,9 +1,112 @@
-<app-navbar></app-navbar>
+@if (isServiceSuspended()) {
+  <!-- PANTALLA DE SUSPENSIÓN ADMINISTRATIVA DEL SERVIDOR -->
+  <div class="min-h-screen w-full bg-slate-950 text-white flex flex-col justify-between relative overflow-hidden select-none">
+    
+    <!-- Luces de fondo sutiles -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-[700px] rounded-full bg-amber-500/10 blur-[130px]"></div>
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 h-80 w-[600px] rounded-full bg-rose-600/10 blur-[130px]"></div>
+    </div>
 
-<main class="min-h-[calc(100vh-20rem)] bg-slate-50 dark:bg-slate-950 transition-colors">
-  <router-outlet></router-outlet>
-</main>
+    <!-- Barra superior de estado del servidor -->
+    <header class="relative z-10 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
+      <div class="mx-auto max-w-5xl px-4 py-4 sm:px-6 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+          </span>
+          <span class="text-xs font-bold uppercase tracking-widest text-slate-300">
+            Estado del Servidor · <span class="text-amber-400">Suspendido</span>
+          </span>
+        </div>
+        <span class="font-mono text-[11px] text-slate-400 bg-slate-950/80 px-3 py-1 rounded-lg border border-slate-800">
+          HTTP 503 · SERVICE_SUSPENDED
+        </span>
+      </div>
+    </header>
 
-<app-footer></app-footer>
+    <!-- Tarjeta central de aviso -->
+    <main class="relative z-10 flex-1 flex items-center justify-center px-4 py-12 sm:px-6">
+      <div class="w-full max-w-2xl rounded-3xl border border-slate-800 bg-slate-900/80 p-7 sm:p-12 shadow-2xl backdrop-blur-xl">
+        
+        <!-- Ícono de Servidor Pausado -->
+        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/20 to-rose-500/20 border border-amber-500/30 text-amber-400 shadow-lg shadow-amber-500/10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+          </svg>
+        </div>
 
-<app-whatsapp-floating></app-whatsapp-floating>
+        <!-- Título y Dominio -->
+        <div class="mt-6 text-center">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-amber-400">
+            Aviso de Infraestructura & Hosting
+          </span>
+          <h1 class="mt-4 font-heading text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Servicio Temporalmente Suspendido
+          </h1>
+          <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl mx-auto">
+            El servicio de servidor cloud y plataforma web para el dominio <strong class="text-white font-semibold">goldreefautos.com</strong> se encuentra temporalmente fuera de línea por gestiones administrativas pendientes.
+          </p>
+        </div>
+
+        <!-- Detalles informativos tranquilizadores -->
+        <div class="mt-8 space-y-3">
+          <div class="flex items-start gap-3.5 rounded-2xl bg-slate-950/70 border border-slate-800/90 p-4">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-xs sm:text-sm font-bold text-white">Integridad de Datos Resguardada (100%)</h2>
+              <p class="mt-0.5 text-xs text-slate-400 leading-relaxed">
+                Toda la base de datos, inventario de vehículos publicados, fotografías y cuentas de usuario se mantienen almacenados y protegidos de forma segura en el servidor.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3.5 rounded-2xl bg-slate-950/70 border border-slate-800/90 p-4">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/25">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-xs sm:text-sm font-bold text-white">¿Cómo reactivar el servicio?</h2>
+              <p class="mt-0.5 text-xs text-slate-400 leading-relaxed">
+                Si usted es el propietario o administrador del sitio, por favor comuníquese con su proveedor de hosting y soporte técnico para regularizar el servicio de servidor. Una vez confirmado, el sistema se restablecerá de forma inmediata.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pie de tarjeta -->
+        <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+            <span>Proveedor Tecnológico: <strong class="text-white">365 SOFT</strong></span>
+          </div>
+          <span class="font-mono text-[11px] text-slate-500">Dominio: www.goldreefautos.com</span>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer minimalista -->
+    <footer class="relative z-10 border-t border-slate-900 py-4 text-center text-[11px] text-slate-500">
+      Sistema de Gestión Cloud · Todos los datos permanecen respaldados de forma segura.
+    </footer>
+
+  </div>
+} @else {
+  <app-navbar></app-navbar>
+
+  <main class="min-h-[calc(100vh-20rem)] bg-slate-50 dark:bg-slate-950 transition-colors">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer></app-footer>
+
+  <app-whatsapp-floating></app-whatsapp-floating>
+}
